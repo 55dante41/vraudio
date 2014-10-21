@@ -34,13 +34,13 @@ public class MainActivity extends Activity {
             public void onClick(View view) {
                 if(virtualBarberStarted) {
                     virtualBarberAudioPlayer.stop();
-                    virtualBarberStarted = false;
-                } else{
                     try {
                         virtualBarberAudioPlayer.prepare();
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
+                    virtualBarberStarted = false;
+                } else{
                     virtualBarberAudioPlayer.start();
                     virtualBarberStarted = true;
                     final Handler handlerVirtualBarberAudio = new Handler();
