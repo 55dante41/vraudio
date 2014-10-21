@@ -11,6 +11,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.SeekBar;
 
+import java.io.IOException;
+
 
 public class MainActivity extends Activity {
 
@@ -34,6 +36,11 @@ public class MainActivity extends Activity {
                     virtualBarberAudioPlayer.stop();
                     virtualBarberStarted = false;
                 } else{
+                    try {
+                        virtualBarberAudioPlayer.prepare();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                     virtualBarberAudioPlayer.start();
                     virtualBarberStarted = true;
                     final Handler handlerVirtualBarberAudio = new Handler();
@@ -42,9 +49,7 @@ public class MainActivity extends Activity {
                         public void run() {
                             if(virtualBarberAudioPlayer != null) {
                                 int currentAudioPosition = virtualBarberAudioPlayer.getCurrentPosition();
-                                Log.d("Debug", "Audio: "+currentAudioPosition/virtualBarberAudioPlayer.getDuration());
                                 controlVirtualBarberAudio.setProgress(currentAudioPosition);
-                                Log.d("Debug","Seekbar: "+ controlVirtualBarberAudio.getProgress()/virtualBarberAudioPlayer.getDuration());
                             }
                             handlerVirtualBarberAudio.postDelayed(this, 1000);
                         }
