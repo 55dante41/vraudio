@@ -45,6 +45,7 @@ public class MainActivity extends Activity {
                     virtualBarberStarted = false;
                 } else{
                     virtualBarberAudioPlayer.start();
+                    virtualBarberAudioPlayer.setLooping(true);
                     virtualBarberStarted = true;
                     final Handler handlerVirtualBarberAudio = new Handler();
                     Runnable runnableVirtualBarberAudio = new Runnable() {
@@ -93,6 +94,7 @@ public class MainActivity extends Activity {
                     interrogationChamberStarted = false;
                 } else{
                     interrogationRoomAudioPlayer.start();
+                    interrogationRoomAudioPlayer.setLooping(true);
                     interrogationChamberStarted = true;
                     final Handler handlerInterrogationRoomAudio = new Handler();
                     Runnable runnableInterrogationRoomAudio = new Runnable() {
