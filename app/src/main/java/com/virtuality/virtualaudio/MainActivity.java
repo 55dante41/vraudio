@@ -16,19 +16,22 @@ import java.io.IOException;
 
 public class MainActivity extends Activity {
 
-    Button playVirtualBarberAudio;
-    SeekBar controlVirtualBarberAudio;
-    boolean virtualBarberStarted = false;
+    Button playVirtualBarberAudio, playInterrogationChamberAudio;
+    SeekBar controlVirtualBarberAudio, controlInterrogationChamberAudio;
+    boolean virtualBarberStarted = false, interrogationChamberStarted = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         playVirtualBarberAudio = (Button) findViewById(R.id.play_audio001);
         controlVirtualBarberAudio = (SeekBar) findViewById(R.id.seekbar_audio001);
+        playInterrogationChamberAudio = (Button) findViewById(R.id.play_audio002);
+        controlInterrogationChamberAudio = (SeekBar) findViewById(R.id.seekbar_audio002);
         final MediaPlayer virtualBarberAudioPlayer = MediaPlayer.create(MainActivity.this, R.raw.audio001);
+        final MediaPlayer interrogationRoomAudioPlayer = MediaPlayer.create(MainActivity.this, R.raw.audio002);
         controlVirtualBarberAudio.setMax(virtualBarberAudioPlayer.getDuration());
+        controlInterrogationChamberAudio.setMax(interrogationRoomAudioPlayer.getDuration());
         playVirtualBarberAudio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -74,6 +77,54 @@ public class MainActivity extends Activity {
             public void onStopTrackingTouch(SeekBar seekBar) {
                 if(virtualBarberAudioPlayer!=null) {
                     virtualBarberAudioPlayer.seekTo(seekBar.getProgress());
+                }
+            }
+        });
+        playInterrogationChamberAudio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(interrogationChamberStarted) {
+                    interrogationRoomAudioPlayer.stop();
+                    try {
+                        interrogationRoomAudioPlayer.prepare();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    interrogationChamberStarted = false;
+                } else{
+                    interrogationRoomAudioPlayer.start();
+                    interrogationChamberStarted = true;
+                    final Handler handlerInterrogationRoomAudio = new Handler();
+                    Runnable runnableInterrogationRoomAudio = new Runnable() {
+                        @Override
+                        public void run() {
+                            if(interrogationRoomAudioPlayer != null) {
+                                int currentAudioPosition = interrogationRoomAudioPlayer.getCurrentPosition();
+                                controlInterrogationChamberAudio.setProgress(currentAudioPosition);
+                            }
+                            handlerInterrogationRoomAudio.postDelayed(this, 1000);
+                        }
+                    };
+                    runnableInterrogationRoomAudio.run();
+                }
+
+            }
+        });
+        controlInterrogationChamberAudio.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                if(interrogationRoomAudioPlayer!=null) {
+                    interrogationRoomAudioPlayer.seekTo(seekBar.getProgress());
                 }
             }
         });

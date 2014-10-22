@@ -22,4 +22,20 @@
         android:id="@+id/seekbar_audio001"
         android:layout_below="@+id/play_audio001"/>
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Interrogation chamber"
+        android:id="@+id/play_audio002"
+        android:layout_below="@+id/seekbar_audio001">
+
+    </Button>
+
+    <SeekBar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/seekbar_audio002"
+        android:layout_below="@+id/play_audio002"/>
+
+
 </RelativeLayout>
